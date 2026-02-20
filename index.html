@@ -15,7 +15,8 @@
   <link rel="icon" type="image/png" href="favicon-32x32.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
-  <link rel="preload" as="image" href="hero.jpg" />
+  <!-- Cache-Bust fürs neue hero.jpg -->
+  <link rel="preload" as="image" href="hero.jpg?v=2" />
 
   <style>
     :root{
@@ -126,9 +127,6 @@
       color:#fff;
       border-color: rgba(148,50,81,.26);
       box-shadow: 0 18px 44px rgba(148,50,81,.22);
-      /* (1) Logo im Button größer/sauber */
-      padding: 10px 14px;
-      gap: 10px;
     }
     .btn.soft{
       background: rgba(148,50,81,.07);
@@ -137,29 +135,8 @@
       box-shadow: 0 12px 26px rgba(11,18,32,.05);
     }
 
-    /* (1) Logo im CTA-Button */
-    .btnLogo{
-      width: 28px;
-      height: 28px;
-      border-radius: 10px;
-      background: rgba(255,255,255,.92);
-      border: 1px solid rgba(255,255,255,.18);
-      display:grid;
-      place-items:center;
-      overflow:hidden;
-      flex: 0 0 auto;
-    }
-    .btnLogo img{
-      width:100%;
-      height:100%;
-      object-fit:contain;
-      padding: 3px;
-      display:block;
-    }
     @media (max-width:820px){
       .btn{padding: 11px 14px; font-size: 13px;}
-      .btn.brand{padding: 10px 12px;}
-      .btnLogo{width: 30px; height: 30px;}
     }
 
     .topbar{
@@ -662,7 +639,6 @@
       height:100%;
       width:0%;
       border-radius:999px;
-      /* (6) Progress-Bar in Firmenfarbe */
       background: linear-gradient(90deg, var(--brand), var(--brand2));
       transition: width .18s ease;
     }
@@ -905,13 +881,8 @@
       </a>
 
       <div class="topActions">
-        <!-- (1) CTA mit größerem Logo im Button -->
-        <a class="btn brand" href="#bewerben" id="topCta">
-          <span class="btnLogo" aria-hidden="true">
-            <img src="logo.webp" alt="" onerror="this.parentElement.style.display='none'">
-          </span>
-          Jetzt bewerben
-        </a>
+        <!-- Button wie vorher: ohne Logo -->
+        <a class="btn brand" href="#bewerben" id="topCta">Jetzt bewerben</a>
       </div>
     </div>
   </header>
@@ -922,8 +893,8 @@
       <div class="shell">
         <div class="heroGrid">
           <div class="heroLeft">
-            <!-- (2) Regional + Illingen + PLZ -->
-            <div class="pill"><span class="dot"></span> Regional • Illingen • PLZ 66557</div>
+            <!-- Text angepasst: PLZ raus, Saarland rein -->
+            <div class="pill"><span class="dot"></span> Regional • Illingen (Saarland)</div>
 
             <h1>Stuckateur gesucht: <span class="accent">Innen- & Außenbereich</span> (m/w/d)</h1>
 
@@ -933,7 +904,8 @@
             </p>
 
             <div class="heroMediaMobile reveal" aria-label="Betrieb / Standort">
-              <img src="hero.jpg" alt="Betrieb / Team" onerror="this.remove()">
+              <!-- Cache-Bust fürs neue hero.jpg -->
+              <img src="hero.jpg?v=2" alt="Betrieb / Team" onerror="this.remove()">
               <div class="heroBadgeMobile">Sicher • fair • sauber</div>
               <div class="heroHintMobile">Gutes Werkzeug & klare Abläufe</div>
             </div>
@@ -941,7 +913,6 @@
             <div class="kpis reveal" role="list">
               <div class="kpi" role="listitem">
                 <div class="k">Bezahlung</div>
-                <!-- (3) 21€ raus -->
                 <div class="v"><b>übertariflich</b></div>
               </div>
               <div class="kpi" role="listitem">
@@ -965,7 +936,8 @@
 
           <div class="heroRight">
             <div class="heroMedia" aria-label="Hero Bild">
-              <img src="hero.jpg" alt="Betrieb / Team" onerror="this.remove()">
+              <!-- Cache-Bust fürs neue hero.jpg -->
+              <img src="hero.jpg?v=2" alt="Betrieb / Team" onerror="this.remove()">
               <div class="heroVignette" aria-hidden="true"></div>
               <div class="heroBadge">Sicherer Job • übertarifliche Bezahlung</div>
               <div class="heroCard">
@@ -1011,7 +983,6 @@
                 <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 16V8"/><path d="M3 16V8"/><path d="M7 8h10"/><path d="M7 16h10"/><path d="M12 8v8"/></svg></span>
                 <div class="title">Faires Gehalt & gutes Werkzeug</div>
               </div>
-              <!-- (4) 21€ raus -->
               <p>Übertarifliche Bezahlung, hochwertige Ausstattung und Material, mit dem man sauber arbeiten kann – ohne Improvisationschaos.</p>
             </div>
 
@@ -1317,8 +1288,6 @@
     <strong id="toastTitle">Hinweis</strong>
     <span id="toastDesc"></span>
   </div>
-
-  <!-- (5) Galerie/Lightbox wurde entfernt, daher auch Lightbox-HTML entfernt -->
 
   <div class="successOverlay" id="successOverlay" aria-label="Bewerbung gesendet">
     <div class="successCard">
