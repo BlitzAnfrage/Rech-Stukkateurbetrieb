@@ -881,7 +881,6 @@
       </a>
 
       <div class="topActions">
-        <!-- Button wie vorher: ohne Logo -->
         <a class="btn brand" href="#bewerben" id="topCta">Jetzt bewerben</a>
       </div>
     </div>
@@ -893,7 +892,6 @@
       <div class="shell">
         <div class="heroGrid">
           <div class="heroLeft">
-            <!-- Text angepasst: PLZ raus, Saarland rein -->
             <div class="pill"><span class="dot"></span> Regional • Illingen (Saarland)</div>
 
             <h1>Stuckateur gesucht: <span class="accent">Innen- & Außenbereich</span> (m/w/d)</h1>
@@ -904,7 +902,6 @@
             </p>
 
             <div class="heroMediaMobile reveal" aria-label="Betrieb / Standort">
-              <!-- Cache-Bust fürs neue hero.jpg -->
               <img src="hero.jpg?v=2" alt="Betrieb / Team" onerror="this.remove()">
               <div class="heroBadgeMobile">Sicher • fair • sauber</div>
               <div class="heroHintMobile">Gutes Werkzeug & klare Abläufe</div>
@@ -936,7 +933,6 @@
 
           <div class="heroRight">
             <div class="heroMedia" aria-label="Hero Bild">
-              <!-- Cache-Bust fürs neue hero.jpg -->
               <img src="hero.jpg?v=2" alt="Betrieb / Team" onerror="this.remove()">
               <div class="heroVignette" aria-hidden="true"></div>
               <div class="heroBadge">Sicherer Job • übertarifliche Bezahlung</div>
@@ -1078,8 +1074,11 @@
             </div>
           </div>
 
+          <!-- Honeypot (gegen Bots) – so, dass Autofill ihn NICHT füllt -->
           <div class="sr-only" aria-hidden="true">
-            <label>Bitte leer lassen <input id="hpField" name="company" autocomplete="off" /></label>
+            <label>Bitte leer lassen
+              <input id="hpField" name="website" autocomplete="off" autocapitalize="off" spellcheck="false" tabindex="-1" />
+            </label>
           </div>
 
           <form id="applyForm" novalidate>
@@ -1302,11 +1301,19 @@
 
 <script>
   const CONFIG = {
+    // ✅ Dauerhaft (empfohlen): Production-Webhook (Workflow muss "Active" sein)
+    // WEBHOOK_URL: "https://n8n.srv899952.hstgr.cloud/webhook/rech",
+
+    // ✅ Testen: Nur wenn du in n8n "Listen for test event" aktiv hast
     WEBHOOK_URL: "https://n8n.srv899952.hstgr.cloud/webhook-test/rech",
+
     PRIVACY_URL: "datenschutz.html",
     IMPRINT_URL: "impressum.html",
     SUCCESS_REDIRECT_URL: "",
-    MIN_SECONDS_ON_PAGE_BEFORE_SUBMIT: 6,
+
+    // ✅ Fix: Keine 6-Sekunden-Sperre mehr (das hat dir das Senden blockiert)
+    MIN_SECONDS_ON_PAGE_BEFORE_SUBMIT: 0,
+
     DRAFT_KEY: "apply_funnel_draft_v1"
   };
 
@@ -1564,6 +1571,7 @@
       toast("Ups", "Bitte nochmal versuchen.");
       return;
     }
+
     const seconds = (Date.now() - pageOpenAt) / 1000;
     if(seconds < CONFIG.MIN_SECONDS_ON_PAGE_BEFORE_SUBMIT){
       toast("Kurzer Moment", "Bitte 1–2 Sekunden warten und dann senden.");
@@ -1586,21 +1594,13 @@
     toast("Sende Bewerbung…", "Einen Moment bitte.");
 
     try{
-      let beaconOk = false;
-      try{
-        const blob = new Blob([JSON.stringify(payload)], { type: "application/json" });
-        beaconOk = navigator.sendBeacon && navigator.sendBeacon(CONFIG.WEBHOOK_URL, blob);
-      }catch(e){ beaconOk = false; }
-
-      if (!beaconOk){
-        await fetch(CONFIG.WEBHOOK_URL, {
-          method: "POST",
-          mode: "no-cors",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-          keepalive: true
-        });
-      }
+      // ✅ Wichtig: so wie dein erfolgreicher F12-Test (n8n bekommt den Body sicher)
+      await fetch(CONFIG.WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=UTF-8" },
+        body: JSON.stringify(payload),
+        keepalive: true
+      });
 
       show($("successNote"), true);
       $("nextBtn").textContent = "Gesendet ✅";
